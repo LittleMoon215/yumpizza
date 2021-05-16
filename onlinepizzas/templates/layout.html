@@ -23,7 +23,8 @@
         }
         table{
             font-variant-caps: all-small-caps;
-            margin: auto;
+            margin: 50px auto auto auto;
+
         }
     </style>
 
@@ -53,7 +54,7 @@
 <body>
 {% if user.is_authenticated %}
     <div class="navbar sticky-top navbar-dark bg-dark">
-        <div class="navbar-brand"> Добро пожаловать, комрад  <span style='color: #119c1e;'>{{ user.get_username }}!!</span>:</div>
+        <div class="navbar-brand"> Добро пожаловать, комрад  <span style='color: #119c1e;'>{{ user.first_name }}!!</span>:</div>
         <div>
             <a href="{% url "menu_view" %}">
                 <button class="btn mx-1 my-xl-0 my-2">Меню</button>

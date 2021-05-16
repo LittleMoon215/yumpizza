@@ -4,17 +4,17 @@
     {% csrf_token %}
         <div class="container">
           <div class="text-center" style="padding-bottom: 15px;font-size: x-large;font-variant-caps: all-small-caps;">
-            <h3>Please check your order and fill in the address for delivery</h3>
+            <h3>Проверьте заказ и заполните адресс доставки</h3>
           </div>
           <table>
             <thead>
             <tr>
-                    <th scope="col">Item</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Price</th>
+                    <th scope="col">Позиция</th>
+                    <th scope="col">Количество</th>
+                    <th scope="col">Цена</th>
                 </tr>
             </thead>
-            {% for item, qty, price in order_summary %}
+            {% for item, qty, price in pizzas_summary %}
 
                 <tr>
                     <td><label for="{{item.name}}" style="font-size: x-large">{{ item.name }}</label><br>
@@ -22,24 +22,51 @@
                     </td>
                     <input type="hidden" name="pizza" value="{{ item.name }}">
                     <td><label for="{{ qty }}">{{ qty }}</label> </td>
-                    <input type="hidden" name="qty" value="{{ qty }}">
-                    <td><label for="{{ price }}">{{ price }} EUR</label></td>
+                    <input type="hidden" name="pizza_qty" value="{{ qty }}">
+                    <td><label for="{{ price }}">{{ price }} РУБ</label></td>
+                    <input type="hidden" name="price" value="{{ price }}">
+                </tr>
+
+            {% endfor %}
+          {% for item, qty, price in drinks_summary %}
+
+                <tr>
+                    <td><label for="{{item.name}}" style="font-size: x-large">{{ item.name }}</label><br>
+                        <label for="{{ item.description }}" style="font-size: large; font-style: italic;">{{ item.description }}</label>
+                    </td>
+                    <input type="hidden" name="drink" value="{{ item.name }}">
+                    <td><label for="{{ qty }}">{{ qty }}</label> </td>
+                    <input type="hidden" name="drink_qty" value="{{ qty }}">
+                    <td><label for="{{ price }}">{{ price }} РУБ</label></td>
+                    <input type="hidden" name="price" value="{{ price }}">
+                </tr>
+
+            {% endfor %}
+          {% for item, qty, price in snacks_summary %}
+
+                <tr>
+                    <td><label for="{{item.name}}" style="font-size: x-large">{{ item.name }}</label><br>
+                        <label for="{{ item.description }}" style="font-size: large; font-style: italic;">{{ item.description }}</label>
+                    </td>
+                    <input type="hidden" name="snack" value="{{ item.name }}">
+                    <td><label for="{{ qty }}">{{ qty }}</label> </td>
+                    <input type="hidden" name="snack_qty" value="{{ qty }}">
+                    <td><label for="{{ price }}">{{ price }} РУБ</label></td>
                     <input type="hidden" name="price" value="{{ price }}">
                 </tr>
 
             {% endfor %}
 
           </table>
-
         <div class="text-center" style="font-variant-caps: all-small-caps;">
             <label for="{{ grand_total }}" style="font-size: large; font-variant-caps: all-small-caps;">
-                DELIVERY COST : 5 EUR <br>
-                TOTAL AMOUNT INCLUDING DELIVERY COST: <strong>{{ grand_total }} EUR/ {{ grand_total_usd }} USD</strong></label>
-            <h4 >Please provide your delivery address and telephone number below</h4><br>
+                Цена доставки : 100 Рублей <br>
+                Итоговая цена с учетом доставки: <strong>{{ grand_total }} РУБ</strong></label>
+            <h4 >Укажите адресс доставки</h4><br>
             <table style="border: 0px !important;font-size: medium">
                 <tr>
-                    <td style="border: 0px !important;"><label for="address">Address:</label></td>
-                    <td style="border: 0px !important;"><input type="text" placeholder="street, house number" required></td>
+                    <td style="border: 0px !important;"><label for="address">Адресс:</label></td>
+                    <td style="border: 0px !important;"><input type="text" placeholder="Улица, дом, квартира" required></td>
                 </tr>
                 <tr>
                     <td style="border: 0px !important;"><label for="telephone">Telephone Number:</label></td>
@@ -48,7 +75,7 @@
 
             </table>
             <div class="text-center" style="padding-top: 20px; ">
-                <button type="submit" style="font-size: x-large;font-variant-caps: all-small-caps;"> Place Order </button>
+                <button type="submit" style="font-size: x-large;font-variant-caps: all-small-caps;"> Заказать </button>
             </div>
         </div>
 

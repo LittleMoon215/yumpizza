@@ -9,10 +9,37 @@ from yumpizza import settings
 class Pizza(models.Model):
     name = models.CharField(max_length=60, unique=True)
     description = models.CharField(max_length=250)
-    price = models.DecimalField(max_digits=4, decimal_places=2, default=0.00, editable=False)
+    price = models.IntegerField(default=0, editable=True)
+    mass = models.IntegerField()
 
     class Meta:
         db_table = "pizza"
+        managed = True
+
+    def __str__(self):
+        return self.name
+
+
+class Drink(models.Model):
+    name = models.CharField(max_length=60, unique=True)
+    description = models.CharField(max_length=250)
+    price = models.IntegerField(default=0, editable=True)
+
+    class Meta:
+        db_table = "drink"
+        managed = True
+
+    def __str__(self):
+        return self.name
+
+
+class Snack(models.Model):
+    name = models.CharField(max_length=60, unique=True)
+    description = models.CharField(max_length=250)
+    price = models.IntegerField(default=0, editable=True)
+
+    class Meta:
+        db_table = "snack"
         managed = True
 
     def __str__(self):
@@ -31,14 +58,28 @@ class Order(models.Model):
         return str(self.pk)
 
 
-class OrderDetails(models.Model):
-    orderId = models.ForeignKey(Order, on_delete=models.CASCADE)
+class OrderPizza(models.Model):
     itemId = models.ForeignKey(Pizza, on_delete=models.CASCADE)
+    orderId = models.ForeignKey(Order, on_delete=models.CASCADE)
     Qty = models.IntegerField(default=1)
 
-    class Meta:
-        managed = True
-        db_table = "order_details"
+    def __str__(self):
+        return str(self.orderId)
+
+
+class OrderDrink(models.Model):
+    itemId = models.ForeignKey(Drink, on_delete=models.CASCADE)
+    orderId = models.ForeignKey(Order, on_delete=models.CASCADE)
+    Qty = models.IntegerField(default=1)
+
+    def __str__(self):
+        return str(self.orderId)
+
+
+class OrderSnack(models.Model):
+    itemId = models.ForeignKey(Snack, on_delete=models.CASCADE)
+    orderId = models.ForeignKey(Order, on_delete=models.CASCADE)
+    Qty = models.IntegerField(default=1)
 
     def __str__(self):
         return str(self.orderId)
@@ -97,6 +138,7 @@ class Position(models.Model):
     def __str__(self):
         return self.title
 
+
 class Workers(models.Model):
     last_name = models.CharField(max_length=50)
     first_name = models.CharField(max_length=50)
@@ -110,3 +152,59 @@ class Workers(models.Model):
 
     def __str__(self):
         return self.number
+
+
+class FeedBack(models.Model):
+    text = models.TextField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.user
+
+
+class Product(models.Model):
+    title = models.CharField(max_length=50, unique=True)
+    amount = models.IntegerField()
+
+    def __str__(self):
+        return self.title
+
+
+class Recipe(models.Model):
+    pizza = models.ForeignKey(Pizza, on_delete=models.DO_NOTHING)
+    ingredient = models.ForeignKey(Product, on_delete=models.DO_NOTHING)
+    mass = models.IntegerField()
+
+    def __str__(self):
+        return self.pizza
+
+
+class DecommissionedProduct(models.Model):
+    amount = models.IntegerField()
+    dateOfDecommission = models.DateField()
+    product = models.ForeignKey(Product, on_delete=models.DO_NOTHING)
+
+    def __str__(self):
+        return self.product
+
+
+class Distributor(models.Model):
+    phone = models.CharField(max_length=12, unique=True, db_index=True)
+    email = models.TextField()
+    productType = models.TextField()
+
+    def __str__(self):
+        return self.phone
+
+
+class DistributorOrder(models.Model):
+    price = models.IntegerField()
+    estimatedDate = models.DateField()
+    orderDate = models.DateField(auto_now_add=True)
+    orderStatus = models.CharField(max_length=50)
+    lastDeliveryDate = models.DateField()
+    distributor = models.ForeignKey(Distributor, on_delete=models.DO_NOTHING)
+    orderContent = models.TextField()
+
+    def __str__(self):
+        return self.orderDate
