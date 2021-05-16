@@ -150,3 +150,13 @@ def user_orders_view(request):
 
     context = {"orders": my_orders}
     return render(request, 'my_orders.html', context)
+
+
+#@login_required
+def feedback_view(request):
+    feedbacks = FeedBack.objects.all()
+    feedback_list = {}
+    for item in feedbacks:
+        feedback_list[f"{item.user.first_name}"] = {"text": item.text}
+    context = {"feedbacks": feedback_list}
+    return render(request, 'feedback.html', context)

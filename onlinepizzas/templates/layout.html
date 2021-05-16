@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <title>
-        YUM Pizzas
+        Вкусная пицца
     </title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css"
@@ -24,6 +24,9 @@
         table{
             font-variant-caps: all-small-caps;
             margin: 50px auto auto auto;
+
+        }
+        .fb_btn{
 
         }
     </style>
@@ -66,11 +69,15 @@
                 <button class="btn ml-1 my-xl-0 my-2" type="button" title="All orders">Заказы</i>
                 </button>
             </a>
+            <a href="{% url "feedback_view" %}">
+                <button class="btn mx-1 my-xl-0 my-2" type="button">Отзывы</button>
+            </a>
             </div>
     </div>
 {% else %}
     <div class="navbar sticky-top navbar-dark bg-dark">
         <a class="navbar-brand" href="/">Добро пожаловать в коммунистическую пиццерию!!</a>
+
         <form class="form-inline my-2 my-lg-0" action="{% url "login_view" %}" autocomplete="off" method="POST">
             {% csrf_token %}
             <div class="col-auto pl-0">
@@ -78,7 +85,7 @@
                     <div class="input-group-prepend">
                         <div class="input-group-text "><i class="fa fa-user"></i></div>
                     </div>
-                    <input type="text" class="form-control my-2 my-sm-0 mr-2" value="" placeholder="Номер телефона" name="number" autofocus maxlength="254" required id="id_number">
+                    <input type="text" class="form-control my-2 my-sm-0 mr-2" value="" placeholder="Номер телефона" name="number" required pattern="[0-9]*" autofocus maxlength="254" required id="id_number">
                     <div class="input-group-prepend">
                         <div class="input-group-text"><i class="fa fa-lock"></i></div>
                     </div>
@@ -88,10 +95,17 @@
             <div class="col-auto pl-0 pr-0">
                 <button class="btn btn-outline-light my-2 my-sm-0 mr-2" type="submit">Войти!</button>
             </div>
+
         </form>
-        <a href="{% url "register_view" %}">
-            <button class="btn btn-outline-primary mx-1 my-xl-0 my-2">Зарегестрироваться!</button>
-        </a>
+        <form>
+            <a href="{% url "feedback_view" %}">
+                <button class="btn" type="button">Отзывы</button>
+            </a>
+            <a href="{% url "register_view" %}">
+                <button class="btn btn-outline-primary mx-1 my-xl-0 my-2" type="button">Зарегестрироваться!</button>
+            </a>
+        </form>
+
     </div>
 {% endif %}
 </div>

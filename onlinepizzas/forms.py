@@ -1,13 +1,25 @@
 from django import forms
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+
 from onlinepizzas.models import User
 from django.contrib.auth.forms import UserCreationForm
 import datetime
 
 
+def only_int(value):
+    if not value.isdigit():
+        raise ValidationError('Введите верный номер')
+    if len(value) != 11:
+        raise ValidationError('Введите 11 цифр, начиная с 8')
+
+
 class RegistrationForm(UserCreationForm):
     email = forms.EmailField(required=True)
-    birthday = forms.DateField(required=True, widget=forms.SelectDateWidget(years=range(int(datetime.datetime.now().year-90),int(datetime.datetime.now().year+1) )))
+    number = forms.CharField(required=True, validators=[only_int])
+    birthday = forms.DateField(required=True, widget=forms.SelectDateWidget(
+        years=range(int(datetime.datetime.now().year - 90), int(datetime.datetime.now().year + 1))))
+
     class Meta:
         model = User
         fields = (
