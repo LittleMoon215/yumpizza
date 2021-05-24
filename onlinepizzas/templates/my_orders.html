@@ -8,6 +8,9 @@
       </div>
 
         {% if orders %}
+            <a href="{% url "print_pdf" %}">
+                <button class="btn mx-1 my-xl-0 my-2">PDF</button>
+            </a>
             <table>
                 <tbody>
                     {% for order,vals in orders.items %}

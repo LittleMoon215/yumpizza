@@ -1,8 +1,10 @@
-from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 
 from django.contrib.auth.decorators import login_required
+
 from .models import *
 from .forms import *
 
@@ -136,6 +138,7 @@ def place_order(request):
 
     return render(request, 'order.html')
 
+orders_context = {}
 
 @login_required
 def user_orders_view(request):
@@ -149,14 +152,43 @@ def user_orders_view(request):
                                 "snacks": orders_snack}
 
     context = {"orders": my_orders}
+    global orders_context
+    orders_context = context
     return render(request, 'my_orders.html', context)
 
 
-#@login_required
+# @login_required
 def feedback_view(request):
+    if request.POST:
+        text = request.POST.getlist('comment')[0]
+        feedback = FeedBack.objects.filter(user=request.user).first()
+        if feedback:
+            feedback.text = text
+        else:
+            feedback = FeedBack(text=text, user=request.user)
+        feedback.save()
     feedbacks = FeedBack.objects.all()
     feedback_list = {}
     for item in feedbacks:
         feedback_list[f"{item.user.first_name}"] = {"text": item.text}
     context = {"feedbacks": feedback_list}
     return render(request, 'feedback.html', context)
+
+
+from xhtml2pdf import pisa
+from django.template.loader import get_template
+from django.views import View
+
+
+def render_to_pdf(request, context={}):
+    global orders_context
+    context = orders_context
+    template = get_template('my_orders.html')
+    html = template.render(context)
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'filename="Orders.pdf"'
+    pdf = pisa.CreatePDF(html, dest=response, )
+    if not pdf.err:
+        return response
+    return None
+

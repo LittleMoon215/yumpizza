@@ -26,7 +26,7 @@ SECRET_KEY = 'u+iy!8jt*!8k$y*+562$q25ox399l)dghtu--lq!i7n^)_wvpw'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = ['localhost','192.168.0.10','90.188.92.68']
 
 
 # Application definition
@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crispy_forms',
-    'psycopg2'
+    'psycopg2',
 ]
 
 
@@ -130,3 +130,7 @@ AUTH_USER_MODEL = 'onlinepizzas.User'
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)

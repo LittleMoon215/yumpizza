@@ -208,3 +208,9 @@ class DistributorOrder(models.Model):
 
     def __str__(self):
         return self.orderDate
+
+
+class Vacancy(models.Model):
+    free = models.IntegerField()
+    payment = models.IntegerField()
+    position = models.ForeignKey(Position, on_delete=models.CASCADE)

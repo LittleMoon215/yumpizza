@@ -4,6 +4,14 @@
 {% block body %}
 <div class="container text-center" style="font-variant-caps: all-small-caps;">
     <div style="padding-bottom: 15px;font-size: x-large">Отзывы</div>
+{% if user.is_authenticated %}
+    <form name="feedback_input" method="post">
+    {% csrf_token %}
+    <b>Оставьте отзыв!</b><br>
+   <textarea name="comment" cols="80" rows="5"></textarea><br>
+    <input type="submit" value="Отправить">
+ </form>
+{% endif %}
     <table>
                 <tbody>
                     {% for feedback,vals in feedbacks.items %}
@@ -16,6 +24,7 @@
                     {% endfor %}
                 </tbody>
     </table>
+
     <div>
 
     </div>

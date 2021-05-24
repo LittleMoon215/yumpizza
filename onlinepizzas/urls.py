@@ -1,5 +1,4 @@
 from django.urls import path
-
 from . import views
 
 urlpatterns = [
@@ -11,5 +10,6 @@ urlpatterns = [
     path("order", views.place_order, name="place_order"),
     path("my_orders", views.user_orders_view, name="user_orders_view"),
     path("logout", views.logout_view, name="logout_view"),
-    path("feedback", views.feedback_view, name="feedback_view")
+    path("feedback", views.feedback_view, name="feedback_view"),
+    path("pdf_orders", views.render_to_pdf, name="print_pdf")
 ]
